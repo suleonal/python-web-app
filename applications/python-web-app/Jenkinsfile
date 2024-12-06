@@ -11,16 +11,18 @@ pipeline {
         FULL_CHART_NAME = "${APP_NAME}-${VERSION}.tgz"
     }
     stages {
-      steps {
-        container('kaniko') {
-          script {
-            sh '''
-            /kaniko/executor --dockerfile `pwd`/Dockerfile \
-                             --context `pwd` \
-                             --destination=suleonal/python-app:1.0.7
-            '''
-          }
+	stage('Kaniko Build & Push Image') {
+            steps {
+                container('kaniko') {
+                    script {
+                        sh '''
+                        /kaniko/executor --dockerfile `pwd`/Dockerfile \
+                                         --context `pwd` \
+                                         --destination=suleonal/python-app:1.0.7
+                        '''
+                    }
+                }
+            }
         }
-      }
     }
 }
