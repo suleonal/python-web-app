@@ -7,6 +7,15 @@ pipeline {
         FULL_CHART_NAME = "${APP_NAME}-${VERSION}.tgz"
     }
     stages {
+	stage('Print Working Directory and List Files') {
+            steps {
+                script {
+                    sh 'pwd'
+                    
+                    sh 'ls -l'
+                }
+            }
+        }
 	stage('Kaniko Build & Push Image') {
             steps {
                 container('kaniko') {
