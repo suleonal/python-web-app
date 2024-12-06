@@ -7,22 +7,16 @@ pipeline {
         FULL_CHART_NAME = "${APP_NAME}-${VERSION}.tgz"
     }
     stages {
-        stage('Build') {
+	stage("Build Docker Image & Push to Docker Hub") {
             steps {
-                sh 'docker build -t myapp:latest .'
-            }
-        }
-        stage('Push Image') {
-            steps {
-                withDockerRegistry([credentialsId: 'dockerhub-creds', url: 'https://index.docker.io/v1/']) {
-                    sh 'docker tag myapp:latest my-dockerhub-user/myapp:latest'
-                    sh 'docker push my-dockerhub-user/myapp:latest'
+                container("kaniko") {
+                    script {
+                        def context = "."
+                        def dockerfile = "Dockerfile"
+                        def image = "suleonal/python-app:1.0.6"
+			sh "/kaniko/executor --context ${context} --dockerfile ${dockerfile} --destination ${image}"
+                    }
                 }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh 'helm upgrade --install myapp ./helm'
             }
         }
     }
