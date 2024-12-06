@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            yamlFile 'jenkins-kaniko-pod.yaml'  // 'builder.yaml' dosyasını pipeline içinde belirtirsiniz
+        }
+    }
     environment {
         APP_NAME = "python-app"
         REPOSITORY = "https://github.com/suleonal/python-web-app.git"
@@ -7,18 +11,16 @@ pipeline {
         FULL_CHART_NAME = "${APP_NAME}-${VERSION}.tgz"
     }
     stages {
-	stage("Build Docker Image & Push to Docker Hub") {
-            steps {
-                container("kaniko") {
-                    script {
-		      sh '''
-                      /kaniko/executor --dockerfile `pwd`/Dockerfile \
-                                       --context `pwd` \
-                                       --destination=suleonal/python-app:1.0.7
-                      '''
-                    }
-                }
-            }
+      steps {
+        container('kaniko') {
+          script {
+            sh '''
+            /kaniko/executor --dockerfile `pwd`/Dockerfile \
+                             --context `pwd` \
+                             --destination=suleonal/python-app:1.0.7
+            '''
+          }
         }
+      }
     }
 }
