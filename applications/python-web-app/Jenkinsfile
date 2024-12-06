@@ -11,10 +11,11 @@ pipeline {
             steps {
                 container("kaniko") {
                     script {
-                        def context = "."
-                        def dockerfile = "Dockerfile"
-                        def image = "suleonal/python-app:1.0.6"
-			sh "/kaniko/executor --context ${context} --dockerfile ${dockerfile} --destination ${image}"
+		      sh '''
+                      /kaniko/executor --dockerfile `pwd`/Dockerfile \
+                                       --context `pwd` \
+                                       --destination=suleonal/python-app:1.0.7
+                      '''
                     }
                 }
             }
