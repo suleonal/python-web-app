@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        kubernetes {
-            yamlFile 'jenkins-kaniko-pod.yaml'  // 'builder.yaml' dosyasını pipeline içinde belirtirsiniz
-        }
-    }
+    agent any
     environment {
         APP_NAME = "python-app"
         REPOSITORY = "https://github.com/suleonal/python-web-app.git"
