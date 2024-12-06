@@ -12,9 +12,7 @@ pipeline {
                 container('kaniko') {
                     script {
                         sh '''
-                        /kaniko/executor --dockerfile `pwd`/Dockerfile \
-                                         --context `pwd` \
-                                         --destination=suleonal/python-app:1.0.7
+			/kaniko/executor --context . --dockerfile Dockerfile --destination suleonal/python-app:1.0.7
                         '''
                     }
                 }
