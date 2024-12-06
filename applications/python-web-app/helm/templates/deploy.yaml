@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "python-app.name" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "python-app.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "python-app.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "python-app.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: python-app
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 5000
+        env:
+        - name: POSTGRES_DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: python-app-secret
+              key: postgres_dbname
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: python-app-secret
+              key: postgres_user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: python-app-secret
+              key: postgres_password
+        - name: POSTGRES_HOST
+          valueFrom:
+            secretKeyRef:
+              name: python-app-secret
+              key: postgres_host
+        - name: POSTGRES_PORT
+          valueFrom:
+            secretKeyRef:
+              name: python-app-secret
+              key: postgres_port
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: python-app-secret
+              key: redis_host
+        - name: REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: python-app-secret
+              key: redis_port
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: python-app-secret
+              key: redis_password

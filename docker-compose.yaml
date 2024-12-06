@@ -1,0 +1,15 @@
+version: '3'
+services:
+  python-app:
+    image: suleonal/python-app:1.0.6
+    environment:
+      - POSTGRES_DBNAME=app_db
+      - POSTGRES_USER=app_user
+      - POSTGRES_PASSWORD=4764kyy7AmGvEMwG
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=5432
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=QVEMF8HgJi5jrT5fYTcMUdje
+    ports:
+      - "5000:5000"

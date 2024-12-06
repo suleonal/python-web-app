@@ -1,0 +1,27 @@
+service:
+  ## @param service.type Jenkins service type
+  ##
+  type: NodePort  # Burada LoadBalancer yerine NodePort kullanın
+
+  ## @param service.ports.http Jenkins service HTTP port
+  ## @param service.ports.https Jenkins service HTTPS port
+  ##
+  ports:
+    http: 80
+    https: 443
+
+  ## Node ports to expose
+  ## @param service.nodePorts.http Node port for HTTP
+  ## @param service.nodePorts.https Node port for HTTPS
+  ## NOTE: choose port between <30000-32767>
+  ##
+  nodePorts:
+    http: 30004   # HTTP için NodePort, istediğiniz portu kullanabilirsiniz
+    https: 30003  # HTTPS için NodePort, istediğiniz portu kullanabilirsiniz
+jenkinsUser: user  # Jenkins kullanıcı adı
+jenkinsPassword: ""  # Şifreyi boş bırakın, secret'tan alınacak şekilde kalsın
+persistence:
+  enabled: true
+  storageClass: ""                   # Eğer kendi StorageClass'ınızı kullanacaksanız burada belirtin
+  accessMode: ReadWriteOnce
+  size: 2Gi
