@@ -54,9 +54,9 @@ pipeline {
                 container('kaniko') {
                     script {
                         env.DOCKER_TAGS.split(",").each { tag ->
-                            sh """
+                            sh '''
                             /kaniko/executor --context $(pwd) --dockerfile $(pwd)/Dockerfile --destination docker.io/${env.DOCKER_REPO}:${tag}
-                            """
+                            '''
                         }
                     }
                 }
