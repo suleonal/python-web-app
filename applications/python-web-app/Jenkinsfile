@@ -4,6 +4,7 @@ pipeline {
         APP_NAME = "python-web-app"
         REPOSITORY = "https://github.com/suleonal/python-web-app.git"
         VERSION = "1.0.${env.BUILD_ID}"
+	DOCKER_REPO = 'suleonal/python-web-app'
 	IMAGE = ""
         FULL_CHART_NAME = "${APP_NAME}-${VERSION}.tgz"
     }
