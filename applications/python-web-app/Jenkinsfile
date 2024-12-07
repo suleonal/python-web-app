@@ -51,11 +51,6 @@ pipeline {
             steps {
                 container('kaniko') {
                     script {
-			def latestTag = sh(
-                    	    script: "curl -s https://registry.hub.docker.com/v2/repositories/suleonal/python-web-app/tags?page_size=1 | jq -r '.results[0].name'",
-                            returnStdout: true
-                        ).trim()
-			echo "Latest Tag Found: ${latestTag}"
                         env.DOCKER_TAGS.split(",").each { tag ->
                             sh '''
                             /kaniko/executor --context $(pwd) --dockerfile $(pwd)/Dockerfile --destination docker.io/${env.DOCKER_REPO}:${tag}
