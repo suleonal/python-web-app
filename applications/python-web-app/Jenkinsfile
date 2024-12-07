@@ -54,6 +54,8 @@ pipeline {
                     script {
                         env.DOCKER_TAGS.split(",").each { tag ->
                             sh '''
+			    echo "Docker Repo: ${env.DOCKER_REPO}"
+                    	    echo "Tag: ${tag}"
                             /kaniko/executor --context /home/jenkins/agent/workspace/python-app --dockerfile Dockerfile --destination docker.io/${env.DOCKER_REPO}:${tag}
                             '''
                         }
