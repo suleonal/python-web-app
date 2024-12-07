@@ -59,7 +59,10 @@ pipeline {
 	stage('Package with Helm') {
             steps {
                 container('helm') {
-                    sh "helm package /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm/."
+	 	    script{
+			sh "pwd"
+                    	sh "helm package /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm/."
+		    }
                 }
             }
         }	
