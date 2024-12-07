@@ -58,11 +58,9 @@ pipeline {
 	}
 	stage('Package with Helm') {
             steps {
-                container('helm') {
-	 	    script{
-			sh "ls /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm-deneme/"
-                    	sh "helm package /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm-deneme/."
-		    }
+	 	script{
+		    sh "ls /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm-deneme/"
+                    sh "helm package /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm-deneme/."
                 }
             }
         }	
