@@ -50,6 +50,7 @@ pipeline {
                     script {
 			    def image = "docker.io/${env.DOCKER_REPO}:${env.DOCKER_TAGS}"
 			    def context = "/home/jenkins/agent/workspace/python-app/applications/python-web-app"
+			    def dockerfile = "Dockerfile"
                             sh "/kaniko/executor --context ${context} --dockerfile ${dockerfile} --destination ${image}"
                     }
                 }
