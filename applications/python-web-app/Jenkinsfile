@@ -55,6 +55,13 @@ pipeline {
                     }
                 }
             }
-	}	
+	}
+	stage('Package with Helm') {
+            steps {
+                container('helm') {
+                    sh "helm package /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm/."
+                }
+            }
+        }	
     }
 }
