@@ -52,9 +52,7 @@ pipeline {
                             echo "Tag: ${env.DOCKER_TAGS}"
 			    def image = "docker.io/${env.DOCKER_REPO}:${env.DOCKER_TAGS}"
 			    echo "Image Tag: ${image}"
-                            sh '''
-                            /kaniko/executor --context /home/jenkins/agent/workspace/python-app --dockerfile Dockerfile --destination ${image}
-                            '''
+                            sh "/kaniko/executor --context /home/jenkins/agent/workspace/python-app --dockerfile Dockerfile --destination ${image}"
                     }
                 }
             }
