@@ -34,13 +34,9 @@ pipeline {
                 script {
                     env.GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                     env.APP_VERSION = "1.0.0" 
+            	    env.APP_VERSION = "1.0"
 
-                    def majorMinor = env.APP_VERSION.split("\\.")[0] + "." + env.APP_VERSION.split("\\.")[1]
-                    env.MAJOR_MINOR_VERSION = majorMinor
-
-            	    env.GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-
-                    env.DOCKER_TAGS = "${env.APP_VERSION},${env.GIT_COMMIT_SHORT},${env.MAJOR_MINOR_VERSION},latest"
+                    env.DOCKER_TAGS = "${env.APP_VERSION}.${env.GIT_COMMIT_SHORT}"
 
                     echo "Application Version: ${env.APP_VERSION}"
                     echo "Major Minor Version: ${env.MAJOR_MINOR_VERSION}"
@@ -52,13 +48,11 @@ pipeline {
             steps {
                 container('kaniko') {
                     script {
-                        env.DOCKER_TAGS.split(",").each { tag ->
-                            sh '''
 			    echo "Docker Repo: ${env.DOCKER_REPO}"
-                    	    echo "Tag: ${tag}"
+                            echo "Tag: ${tag}"
+                            sh '''
                             /kaniko/executor --context /home/jenkins/agent/workspace/python-app --dockerfile Dockerfile --destination docker.io/${env.DOCKER_REPO}:${tag}
                             '''
-                        }
                     }
                 }
             }
