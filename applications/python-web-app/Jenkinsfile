@@ -61,7 +61,7 @@ pipeline {
                 container('helm') {
 	 	    script{
 			sh "ls /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm/"
-                    	sh "helm package /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm/."
+                    	sh "helm package /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm-deneme/."
 		    }
                 }
             }
