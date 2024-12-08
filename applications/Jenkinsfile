@@ -3,9 +3,7 @@ pipeline {
     environment {
         APP_NAME = "python-web-app"
         REPOSITORY = "https://github.com/suleonal/python-web-app.git"
-        VERSION = "1.0.${env.BUILD_ID}"
 	DOCKER_REPO = 'suleonal/python-web-app'
-	IMAGE = ""
         FULL_CHART_NAME = "${APP_NAME}-${VERSION}.tgz"
     }
     stages {
@@ -49,7 +47,7 @@ pipeline {
                 container('kaniko') {
                     script {
 			    def image = "docker.io/${env.DOCKER_REPO}:${env.DOCKER_TAGS}"
-			    def context = "/home/jenkins/agent/workspace/python-app/applications/python-web-app"
+			    def context = "applications"
 			    def dockerfile = "Dockerfile"
                             sh "/kaniko/executor --context ${context} --dockerfile ${dockerfile} --destination ${image}"
                     }
@@ -59,8 +57,7 @@ pipeline {
 	stage('Package with Helm') {
             steps {
 	 	script{
-		    sh "ls /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm-deneme/"
-                    sh "helm package /home/jenkins/agent/workspace/python-app/applications/python-web-app/helm-deneme/."
+                    sh "helm package applications/helm/."
                 }
             }
         }	
