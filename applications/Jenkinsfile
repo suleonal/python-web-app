@@ -14,6 +14,8 @@ pipeline {
                     sh 'pwd'
                     
                     sh 'ls -l'
+			
+		    echo "full chart name: $FULL_CHART_NAME"
                 }
             }
         }
@@ -90,6 +92,14 @@ pipeline {
             steps {
 	 	script{
                     sh "helm package applications/helm/."
+                }
+            }
+        }
+	stage('Helm Push') {
+            steps {
+                container('helm') {
+                    sh "echo \"@${FULL_CHART_NAME}\""
+                    sh "curl --data-binary \"@${FULL_CHART_NAME}\" http://helm-repo-chartmuseum.default.svc.cluster.local:8080/api/charts"
                 }
             }
         }	
