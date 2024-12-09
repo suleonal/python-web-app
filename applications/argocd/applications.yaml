@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: python-app
+spec:
+  destination:
+    name: ''
+    namespace: applications
+    server: 'https://kubernetes.default.svc'
+  project: python-deneme
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  sources:
+  - repoURL: 'http://helm-repo-chartmuseum.default.svc.cluster.local:8080'
+    chart: python-web-app
+    targetRevision: 1.0.59

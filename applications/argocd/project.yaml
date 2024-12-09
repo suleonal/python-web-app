@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: python-deneme
+spec:
+  description: "Python project"
+  sourceRepos:
+    - 'http://helm-repo-chartmuseum.default.svc.cluster.local:8080'  # Bu repository'den kaynaklar alınacak
+  destinations:
+    - namespace: applications
+      server: 'https://kubernetes.default.svc'

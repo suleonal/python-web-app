@@ -109,15 +109,5 @@ pipeline {
                 }
             }
         }
-	stage('Helm Install') {
-            steps {
-                container('helm') {
-                    script{
-			   sh "cd applications/helm"
-                           sh "helm upgrade --install ${APP_NAME} ./${FULL_CHART_NAME} --values ${VALUES_FILE} -n ${NAMESPACE}"
-                    }
-                }
-            }
-        }	
     }
 }
