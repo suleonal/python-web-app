@@ -7,7 +7,7 @@ spec:
     name: ''
     namespace: applications
     server: 'https://kubernetes.default.svc'
-  project: python-deneme
+  project: python
   syncPolicy:
     automated:
       prune: true
@@ -15,4 +15,4 @@ spec:
   sources:
   - repoURL: 'http://helm-repo-chartmuseum.default.svc.cluster.local:8080'
     chart: python-web-app
-    targetRevision: 1.0.59
+    targetRevision: '*'

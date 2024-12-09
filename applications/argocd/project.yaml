@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: python-deneme
+  name: python
 spec:
   description: "Python project"
   sourceRepos:

@@ -10,28 +10,6 @@ pipeline {
 	NAMESPACE = "applications"
     }
     stages {
-	stage('Print Working Directory and List Files') {
-            steps {
-                script {
-                    sh 'pwd'
-                    
-                    sh 'ls -l'
-			
-		    echo "full chart name: $FULL_CHART_NAME"
-                }
-            }
-        }
-	/*stage('Kaniko Build & Push Image') {
-            steps {
-                container('kaniko') {
-                    script {
-                        sh '''
-			/kaniko/executor --context 'pwd' --dockerfile 'pwd'/Dockerfile  --destination https://index.docker.io/v1/suleonal/python-web-app:1.0.1
-                        '''
-                    }
-                }
-            }
-        }*/
 	stage('Fetch Git Version') {
             steps {
                 script {
@@ -42,7 +20,6 @@ pipeline {
                     env.DOCKER_TAGS = "${env.APP_VERSION}.${env.GIT_COMMIT_SHORT}"
 
                     echo "Application Version: ${env.APP_VERSION}"
-                    echo "Major Minor Version: ${env.MAJOR_MINOR_VERSION}"
                     echo "Docker Tags: ${env.DOCKER_TAGS}"
                 }
             }
@@ -63,7 +40,7 @@ pipeline {
 	    steps {
         	script {
             		def valuesFile = "applications/helm/values.yaml"
-            		def newTag = env.DOCKER_TAGS  // Önceki stage'de oluşturulan Docker tag'ı
+            		def newTag = env.DOCKER_TAGS
 
             		echo "Updating image tag in Helm values file: ${newTag}"
 
