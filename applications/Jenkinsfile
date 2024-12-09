@@ -106,6 +106,15 @@ pipeline {
 
                 }
             }
+        }
+	stage('Package with Helm') {
+            steps {
+                container('helm') {
+                    script{
+                           sh "helm install python-web-app http://helm-repo-chartmuseum.default.svc.cluster.local:8080/python-web-app-1.0.55.tgz"
+                    }
+                }
+            }
         }	
     }
 }
