@@ -6,6 +6,8 @@ pipeline {
 	DOCKER_REPO = 'suleonal/python-web-app'
 	VERSION = "1.0.${env.BUILD_ID}"
         FULL_CHART_NAME = "${APP_NAME}-${VERSION}.tgz"
+	VALUES_FILE = "applications/helm/values.yaml" 
+	NAMESPACE = "applications"
     }
     stages {
 	stage('Print Working Directory and List Files') {
@@ -111,7 +113,8 @@ pipeline {
             steps {
                 container('helm') {
                     script{
-                           sh "helm install python-web-app http://helm-repo-chartmuseum.default.svc.cluster.local:8080/python-web-app-1.0.55.tgz"
+			   sh "cd applications/helm"
+                           sh "helm upgrade --install ${APP_NAME} ./${FULL_CHART_NAME} --values ${VALUES_FILE} -n ${NAMESPACE}"
                     }
                 }
             }

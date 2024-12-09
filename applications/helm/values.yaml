@@ -16,5 +16,5 @@ redis:
 service:
   port: 5000              # Kubernetes dışına açılacak port (LoadBalancer veya NodePort)
   targetPort: 5000
-  nodePort: 30007
+  nodePort: 30010
   type: NodePort
