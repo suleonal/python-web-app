@@ -107,7 +107,7 @@ pipeline {
                 }
             }
         }
-	stage('Package with Helm') {
+	stage('Helm Install') {
             steps {
                 container('helm') {
                     script{
