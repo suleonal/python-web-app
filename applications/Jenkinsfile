@@ -90,10 +90,10 @@ pipeline {
         }
 	stage('Package with Helm') {
             steps {
-		container('kaniko') {
-	 		script{
-                    	    sh "helm package applications/helm/."
-                	}
+		container('helm') {
+	 	    script{
+                    	   sh "helm package applications/helm/."
+                    }
             	}
             }
 	}
