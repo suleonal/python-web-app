@@ -54,6 +54,22 @@ pipeline {
                 }
             }
 	}
+	stage('Modify Chart Version') {
+            steps {
+                script {
+                    sh """#!/bin/bash
+                       # Current version
+                       cat applications/helm/Chart.yaml | grep version
+
+                       # Update version using sed
+                       sed -i 's|version: .*|version: "${VERSION}"|' applications/helm/Chart.yaml
+
+                       # Updated version
+                       cat applications/helm/Chart.yaml | grep version
+                    """
+                }
+            }
+        }
 	stage('Package with Helm') {
             steps {
 	 	script{
