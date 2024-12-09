@@ -1,5 +1,5 @@
 apiVersion: v2
-name: app
+name: python-web-app
 version: 0.1.1
 appVersion: "1.0.1"
 description: A Helm chart for deploying a Flask app with Redis and PostgreSQL
