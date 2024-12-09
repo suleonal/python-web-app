@@ -90,11 +90,13 @@ pipeline {
         }
 	stage('Package with Helm') {
             steps {
-	 	script{
-                    sh "helm package applications/helm/."
-                }
+		container('kaniko') {
+	 		script{
+                    	    sh "helm package applications/helm/."
+                	}
+            	}
             }
-        }
+	}
 	stage('Helm Push') {
             steps {
                 container('helm') {
