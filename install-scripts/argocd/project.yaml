@@ -5,7 +5,7 @@ metadata:
 spec:
   description: "Python project"
   sourceRepos:
-    - 'http://helm-repo-chartmuseum.default.svc.cluster.local:8080'  # Bu repository'den kaynaklar alınacak
+    - 'http://helm-repo-chartmuseum.default.svc.cluster.local:8080'
   destinations:
     - namespace: applications
       server: 'https://kubernetes.default.svc'
