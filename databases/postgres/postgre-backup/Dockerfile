@@ -16,5 +16,10 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -c | awk '{
 
 RUN apt-get install -y awscli
 
+# MinIO Client (mc) kurulumu
+RUN curl -O https://dl.min.io/client/mc/release/linux-amd64/mc \
+    && chmod +x mc \
+    && mv mc /usr/local/bin/
+
 CMD ["bash"]
 

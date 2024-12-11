@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgresql-backup-minio
+  namespace: databases
+spec:
+  schedule: "55 12 * * *" # Yedekleme zamanlaması (günlük saat 12:38)
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: postgresql-backup
+              image: suleonal/minio-postgres-cli:latest
+              env:
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgresql-secret
+                      key: postgresql-password
+                - name: POSTGRES_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgresql-secret
+                      key: postgresql-user
+                - name: POSTGRES_DB
+                  value: "app_db"
+                - name: MINIO_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: minio-secret
+                      key: access-key
+                - name: MINIO_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: minio-secret
+                      key: secret-key
+                - name: MINIO_ENDPOINT
+                  value: "http://my-minio.databases.svc.cluster.local:9000" # MinIO endpoint
+                - name: S3_BUCKET
+                  value: "adesso"
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  TIMESTAMP=$(date "+%Y-%m-%d-%H%M%S")
+                  BACKUP_FILE="/tmp/db_backup_${TIMESTAMP}.sql"
+
+                  export PGPASSWORD=$POSTGRES_PASSWORD
+                  echo "PostgreSQL yedeği oluşturuluyor..."
+                  pg_dump -U $POSTGRES_USER -d $POSTGRES_DB -h postgres-postgresql.databases.svc.cluster.local > $BACKUP_FILE
+
+                  echo "MINIO_ACCESS_KEY: $MINIO_ACCESS_KEY"
+                  echo "MINIO_SECRET_KEY: $MINIO_SECRET_KEY"
+        
+                  echo "Yedek dosyası MinIO'ya yükleniyor..."
+                  mc alias set myminio http://my-minio.databases.svc.cluster.local:9000 $MINIO_ACCESS_KEY $MINIO_SECRET_KEY  
+                  mc cp $BACKUP_FILE myminio/$S3_BUCKET/
+          restartPolicy: OnFailure
+
